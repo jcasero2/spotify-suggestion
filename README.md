@@ -1,5 +1,5 @@
 # spotify-suggestion
-Jorge Casero <jcasero@umich.edu> \n
+Jorge Casero <jcasero@umich.edu><br />
 Sid Murthy <smurthy@umich.edu>
 
 ## Description
