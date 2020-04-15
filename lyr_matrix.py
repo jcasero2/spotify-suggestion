@@ -20,7 +20,7 @@ def insert(source_str, insert_str, pos):
 
 # Requires: Valid string word
 # Modifies: word
-# Effects: Removes all characters in a word that are not
+# Effects: Removes all characters in a string that are not
 # 		   alphanumeric
 def removeMarks(word):
 	return ''.join(ch for ch in word if ch.isalnum())
@@ -63,7 +63,7 @@ def makePrefString(pref_dict, pref_num_words):
 # Requires: Valid pool.json, pref_dict, pref_num_words
 # Modifies: pool_string
 # Effects: Returns string to create m X n matrix with the frequency that each
-# 		   m word appears in each n song
+# 		   m word appears in each n songs
 def makePoolString(pool_json, pref_dict, pref_num_words):
 	pool_string = ""
 	for i in range(len(pref_dict) - 1):
