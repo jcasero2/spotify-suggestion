@@ -1,18 +1,37 @@
 import numpy as np
 import json
+
+# Requires: Valid json file for pref_json and pool_json
+# Modifies: lyr_matrix.pref_string and lyr_matrix.pool_string
+# Effects: Initializes pref_string and pool_string w/ data from 
+# 		   pref_json and pool_json JSON files
 class lyr_matrix:
 	def __init__(self, pref_json, pool_json):
 		pref_dict, pref_num_words = createPref(pref_json)
 		self.pref_string = makePrefString(pref_dict, pref_num_words)
 		self.pool_string = makePoolString(pool_json, pref_dict, pref_num_words)
 
+# Requires: Valid source_str, insert_str, and pos
+# Modifies: source_str
+# Effects: Inserts a substring insert_str into source_str
+# 		   at index pos
 def insert(source_str, insert_str, pos):
     return source_str[:pos]+insert_str+source_str[pos:]
 
+# Requires: Valid string word
+# Modifies: word
+# Effects: Removes all characters in a string that are not
+# 		   alphanumeric
 def removeMarks(word):
 	return ''.join(ch for ch in word if ch.isalnum())
 
-# creates the preference matrix 
+
+# Requires: Valid pref.json file
+# Modifies: pref_dict, num_words
+# Effects: Returns dictionary of all the words in lyrics of songs in
+# 		   pref.json for which length is greater than 4, where key is
+#		   the word in the lyrics and value is the times it appears in
+#		   the song
 def createPref(pref_json):
 	pref_dict = {}
 	num_words = 0
@@ -27,6 +46,10 @@ def createPref(pref_json):
 					num_words += 1
 	return pref_dict, num_words
 
+# Requires: Valid pref_dict, pref_num_words
+# Modifies: pref_string
+# Effects: Returns string to create matrix with the frequency that each
+# 		   word appears in the song
 def makePrefString(pref_dict, pref_num_words):
 	pref_string = ""
 	counter = 0
@@ -37,6 +60,10 @@ def makePrefString(pref_dict, pref_num_words):
 		counter += 1
 	return pref_string
 
+# Requires: Valid pool.json, pref_dict, pref_num_words
+# Modifies: pool_string
+# Effects: Returns string to create m X n matrix with the frequency that each
+# 		   m word appears in each n songs
 def makePoolString(pool_json, pref_dict, pref_num_words):
 	pool_string = ""
 	for i in range(len(pref_dict) - 1):
