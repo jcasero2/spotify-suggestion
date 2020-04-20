@@ -129,14 +129,10 @@ for i in temp_song_artist_array2:
 
 temp_song_artist_array4 = []
 for i in temp_song_artist_array3:
-    temp_song_artist_array4.append(i[0])
+    temp_song_artist_array4.append(i[0]['name'])
 
-temp_song_artist_array5 = []
 for i in temp_song_artist_array4:
-    temp_song_artist_array5.append(i['name'])
-
-for i in temp_song_artist_array5:
     song_artist_array.append(i.encode('ascii', 'ignore'))
 
 pprint(song_artist_array)
-del temp_song_artist_array, temp_song_artist_array2, temp_song_artist_array3, temp_song_artist_array4, temp_song_artist_array5
+del temp_song_artist_array, temp_song_artist_array2, temp_song_artist_array3, temp_song_artist_array4
