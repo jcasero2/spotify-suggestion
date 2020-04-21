@@ -1,128 +1,128 @@
 import spotipy
 import json
+import sys
 import string
 from pprint import pprint
 from spotipy.oauth2 import SpotifyClientCredentials
 
-#export SPOTIFY_CLIENT_ID='90b9f9fc2ec04d04aae543c938299733'
-#export SPOTIFY_CLIENT_SECRET='5b1bcc765ebd4ba2a2bbdb8603705330'
+if len(sys.argv) == 4:
+    client_credentials_manager = SpotifyClientCredentials(sys.argv[1],sys.argv[2])
+    sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
+    playlist_id = 'spotify:user:spotifycharts:playlist:3J43GvmqW6M93WKM1sSjO0'
 
-client_credentials_manager = SpotifyClientCredentials('90b9f9fc2ec04d04aae543c938299733',
-                                                        '5b1bcc765ebd4ba2a2bbdb8603705330')
-sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+    #most important one
+    #will be 2d array with song id, name, artist, and lyrics
+    tracks={}
 
-playlist_id = 'spotify:user:spotifycharts:playlist:3J43GvmqW6M93WKM1sSjO0'
+    #array of songs
+    song_name_array = []
 
-#most important one
-#will be 2d array with song id, name, artist, and lyrics
-tracks={}
+    #array of song ids
+    song_artist_array = []
 
-#array of songs
-song_name_array = []
+    #array of song lyrics
+    song_lyrics_array = []
 
-#array of song ids
-song_artist_array = []
+    ###############################################################3
+    #gets the song array out of the paylist tracks
+    temp_song_name_array=[]
+    offset = 0;
+    while True:
+        response = sp.playlist_tracks(playlist_id,
+                                    offset=offset,
+                                    fields=('items.track.name,total'))
+        
+        temp_song_name_array.append(response['items'])
+        offset = offset + len(response['items'])
 
-#array of song lyrics
-song_lyrics_array = []
+        if len(response['items']) == 0:
+            break
 
-###############################################################3
-#gets the song array out of the paylist tracks
-temp_song_name_array=[]
-offset = 0;
-while True:
-    response = sp.playlist_tracks(playlist_id,
-                                  offset=offset,
-                                  fields=('items.track.name,total'))
-    
-    temp_song_name_array.append(response['items'])
-    offset = offset + len(response['items'])
+    temp_song_name_array.pop(1)
 
-    if len(response['items']) == 0:
-        break
+    #puts it into a manipulative array
+    temp_song_name_array2=[]
+    for i in temp_song_name_array:
+        for a in range(14): #try to not make this static down the road
+            temp_song_name_array2.append(i[a])
 
-temp_song_name_array.pop(1)
+    #manipulates array and creates a separate list of strictly song names
+    temp_song_name_array3 = []
+    for i in temp_song_name_array2:
+        temp_song_name_array3.append(i['track']['name'])
 
-#puts it into a manipulative array
-temp_song_name_array2=[]
-for i in temp_song_name_array:
-    for a in range(14): #try to not make this static down the road
-        temp_song_name_array2.append(i[a])
+    for i in temp_song_name_array3:
+        song_name_array.append(i) 
 
-#manipulates array and creates a separate list of strictly song names
-temp_song_name_array3 = []
-for i in temp_song_name_array2:
-    temp_song_name_array3.append(i['track']['name'])
+    del temp_song_name_array, temp_song_name_array2, temp_song_name_array3
 
-for i in temp_song_name_array3:
-    song_name_array.append(i) 
+    ###########################################################################
+    #try to generalize above
+    #time for artists
 
-del temp_song_name_array, temp_song_name_array2, temp_song_name_array3
+    temp_song_artist_array=[]
+    offset = 0;
+    while True: #got this part from an article
+        response = sp.playlist_tracks(playlist_id,
+                                    offset=offset,
+                                    fields=('items.track.artists,total'))
+        
+        temp_song_artist_array.append(response['items'])
+        offset = offset + len(response['items'])
 
-###########################################################################
-#try to generalize above
-#time for artists
+        if len(response['items']) == 0:
+            break
 
-temp_song_artist_array=[]
-offset = 0;
-while True: #got this part from an article
-    response = sp.playlist_tracks(playlist_id,
-                                  offset=offset,
-                                  fields=('items.track.artists,total'))
-    
-    temp_song_artist_array.append(response['items'])
-    offset = offset + len(response['items'])
+    temp_song_artist_array.pop(1)
 
-    if len(response['items']) == 0:
-        break
+    #puts it into a manipulative array
+    temp_song_artist_array2=[]
+    for i in temp_song_artist_array:
+        for a in range(14): #try to not make this static down the road
+            temp_song_artist_array2.append(i[a])
 
-temp_song_artist_array.pop(1)
+    #manipulates array and creates a separate list of strictly song names
+    temp_song_artist_array3 = []
+    for i in temp_song_artist_array2:
+        temp_song_artist_array3.append(i['track']['artists'])
 
-#puts it into a manipulative array
-temp_song_artist_array2=[]
-for i in temp_song_artist_array:
-    for a in range(14): #try to not make this static down the road
-        temp_song_artist_array2.append(i[a])
+    temp_song_artist_array4 = []
+    for i in temp_song_artist_array3:
+        temp_song_artist_array4.append(i[0]['name'])
 
-#manipulates array and creates a separate list of strictly song names
-temp_song_artist_array3 = []
-for i in temp_song_artist_array2:
-    temp_song_artist_array3.append(i['track']['artists'])
+    for i in temp_song_artist_array4:
+        song_artist_array.append(i)
 
-temp_song_artist_array4 = []
-for i in temp_song_artist_array3:
-    temp_song_artist_array4.append(i[0]['name'])
+    del temp_song_artist_array, temp_song_artist_array2, temp_song_artist_array3, temp_song_artist_array4
 
-for i in temp_song_artist_array4:
-    song_artist_array.append(i)
+    ##############################################################
+    #saving lyrics
 
-del temp_song_artist_array, temp_song_artist_array2, temp_song_artist_array3, temp_song_artist_array4
+    import lyricsgenius
 
-##############################################################
-#saving lyrics
+    genius = lyricsgenius.Genius(sys.argv[3])
 
-import lyricsgenius
+    for i in range(14):
+        song_lyrics_array.append(genius.search_song(song_name_array[i],song_artist_array[i]).lyrics)
 
-genius = lyricsgenius.Genius("DarqZVpt40MVjo3IvGD-njXzLaAptNedLk2SS5QydS9vAcgS8LHHraOZglPEMEm3")
+    #############################################################
+    #last steps
 
-for i in range(14):
-    song_lyrics_array.append(genius.search_song(song_name_array[i],song_artist_array[i]).lyrics)
+    a = ""
+    for i in range(14):
+        a = "Song {}".format(i+1)
+        tracks[a] = ({
+            "Name" : song_name_array[i],
+            "Artist" : song_artist_array[i],
+            "Lyrics" : song_lyrics_array[i]
+        })
 
-#############################################################
-#last steps
+    outfile =  open('track_lyrics.json', 'w')
 
-a = ""
-for i in range(14):
-    a = "Song {}".format(i+1)
-    tracks[a] = ({
-        "Name" : song_name_array[i],
-        "Artist" : song_artist_array[i],
-        "Lyrics" : song_lyrics_array[i]
-    })
+    json.dump(tracks,outfile,indent=5)
 
-outfile =  open('track_lyrics.json', 'w')
+    outfile.close()
 
-json.dump(tracks,outfile,indent=5)
-
-outfile.close()
+else:
+    print("not enough args")
