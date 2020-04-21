@@ -13,10 +13,10 @@ pip3 install PyLyrics<br />
 pip3 install numpy
 
 ## Spotify/Genius API Client requirements
-You need:
-Spotify API Client ID
-Spotify API Client Secret
-Genius API Client Access Token
+You need: 
+- Spotify API Client ID
+- Spotify API Client Secret
+- Genius API Client Access Token
 
 - When running program, format is python3 lyrics.py --Spotify client ID-- --Spotify client secret-- --Genius client access token--
 
