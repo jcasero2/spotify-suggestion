@@ -12,7 +12,6 @@ if len(sys.argv) == 4:
     playlist_id = 'spotify:user:spotifycharts:playlist:3J43GvmqW6M93WKM1sSjO0'
 
     #most important one
-    #will be 2d array with song id, name, artist, and lyrics
     tracks={}
 
     #array of songs
@@ -40,12 +39,17 @@ if len(sys.argv) == 4:
             break
 
     temp_song_name_array.pop(1)
-
-    #puts it into a manipulative array
+    
+    #puts it into a manipulative array and gets playlist size
     temp_song_name_array2=[]
+    count = 0
+
     for i in temp_song_name_array:
-        for a in range(14): #try to not make this static down the road
-            temp_song_name_array2.append(i[a])
+        for a in i: #try to not make this static down the road
+            temp_song_name_array2.append(a)
+            count = count + 1
+    
+    playlist_size = count
 
     #manipulates array and creates a separate list of strictly song names
     temp_song_name_array3 = []
@@ -79,8 +83,8 @@ if len(sys.argv) == 4:
     #puts it into a manipulative array
     temp_song_artist_array2=[]
     for i in temp_song_artist_array:
-        for a in range(14): #try to not make this static down the road
-            temp_song_artist_array2.append(i[a])
+        for a in i: #try to not make this static down the road
+            temp_song_artist_array2.append(a)
 
     #manipulates array and creates a separate list of strictly song names
     temp_song_artist_array3 = []
@@ -103,14 +107,14 @@ if len(sys.argv) == 4:
 
     genius = lyricsgenius.Genius(sys.argv[3])
 
-    for i in range(14):
+    for i in range(playlist_size):
         song_lyrics_array.append(genius.search_song(song_name_array[i],song_artist_array[i]).lyrics)
 
     #############################################################
     #last steps
 
     a = ""
-    for i in range(14):
+    for i in range(playlist_size):
         a = "Song {}".format(i+1)
         tracks[a] = ({
             "Name" : song_name_array[i],
