@@ -5,11 +5,14 @@ import string
 from pprint import pprint
 from spotipy.oauth2 import SpotifyClientCredentials
 
-if len(sys.argv) == 4:
+if len(sys.argv) > 3:
     client_credentials_manager = SpotifyClientCredentials(sys.argv[1],sys.argv[2])
     sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-    playlist_id = 'spotify:user:spotifycharts:playlist:3J43GvmqW6M93WKM1sSjO0'
+    if len(sys.argv) == 5:
+        playlist_id = sys.argv[4]
+    else:
+        playlist_id = 'spotify:user:spotifycharts:playlist:3J43GvmqW6M93WKM1sSjO0'
 
     #most important one
     tracks={}
