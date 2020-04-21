@@ -10,7 +10,12 @@ if len(sys.argv) > 3:
     sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
     if len(sys.argv) == 5:
-        playlist_id = sys.argv[4]
+        temp = sys.argv[4]
+        if temp.find('https://open.spotify.com/playlist/') != -1:
+            temp = temp.replace("https://open.spotify.com/playlist/","")
+            playlist_id = 'spotify:user:spotifycharts:playlist:{}'.format(temp)
+        else:
+            playlist_id = 'spotify:user:spotifycharts:playlist:{}'.format(temp)
     else:
         playlist_id = 'spotify:user:spotifycharts:playlist:3J43GvmqW6M93WKM1sSjO0'
 
@@ -132,4 +137,4 @@ if len(sys.argv) > 3:
     outfile.close()
 
 else:
-    print("not enough args")
+    print("missing essential args")
