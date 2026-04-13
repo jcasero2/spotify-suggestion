@@ -21,7 +21,7 @@ setup(
     include_package_data=True,
     install_requires=[
 		'psutil==5.7.0',
-		'pytest==4.6.9',
+		'pytest==9.0.3',
 		'pytest-xdist==1.31.0',
     ],
 )
